@@ -34,8 +34,6 @@ pub fn run<'a>(from: &str, seqs_hash: HashMap<&'a str, &'a str>) -> String {
 
             if !all_matches.is_empty() {
                 memory.push(c);
-
-                println!("MEM PUSH: {}", c);
             }
 
             // For every matched item
@@ -65,16 +63,13 @@ pub fn run<'a>(from: &str, seqs_hash: HashMap<&'a str, &'a str>) -> String {
                     if front.start_i > memory.get_index() {
                         let str_offset = front.start_i - memory.get_index();
                         let prev_str = memory.drain_chars(str_offset);
-                        println!("MEM DRAIN PUSH: {}", prev_str);
                         to_str.push_str(&prev_str);
                     }
 
                     // Sync memory and update str with matcher replace
                     memory.set_index(front.end_i + 1); // ?? is on the last char, not after it
-                    println!("MEM INDEX: {}", memory.start_i);
                     memory.drain_chars(front.from_seq_count);
                     to_str.push_str(front.to_seq);
-                    println!("REP PUSH: {}", front.to_seq);
                 } else {
                     break;
                 }
@@ -84,20 +79,15 @@ pub fn run<'a>(from: &str, seqs_hash: HashMap<&'a str, &'a str>) -> String {
             if all_matches.is_empty() {
                 to_str.push_str(&memory.drain_all());
                 memory.set_index(c_index + 1);
-                println!("MEM INDEX: {}", memory.start_i);
             }
         } else {
             memory.set_index(c_index + 1);
-            println!("MEM INDEX: {}", memory.start_i);
-            println!("MEM PUSH C: {}", c);
             to_str.push(c);
         }
-        println!("CHAR: {}, LOOP COUNT {}", c, c_index);
     }
 
     to_str
 }
-use std::ops::Add;
 
 struct StringCache {
     s: String,
@@ -112,9 +102,6 @@ impl StringCache {
     }
 
     fn drain_chars(&mut self, count: usize) -> String {
-        println!("Current String: {}", self.s);
-        println!("Drain_Chars (COUNT): {}", count);
-
         let mut ret_s: String = "".to_string();
         let mut chars_rem: Vec<char> = self.s.clone().chars().collect();
         let chars: Vec<char> = chars_rem.drain(..count).collect();
@@ -271,7 +258,6 @@ mod tests {
         println!("After drain: {}", sc.s);
 
         assert_eq!(ret_s, "hippo");
-        //assert_eq!("ppo".to_string(), sc.s);
     }
 
     #[test]

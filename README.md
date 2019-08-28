@@ -1,20 +1,21 @@
+rreplace
+========
+
 rreplace is a rust library designed to streamline string replacements.
 It can handle multiple unique replacements and iterates the string only
-once. Multiple unique repacements may eclipse one another, therefore
-rreplace follows this replacement priority.
+once. Repacements may eclipse one another, therefore rreplace follows this priority.
 
--   First match
+1.   First match
+2.   Longest match
 
--   Longest match
-
-rreplace in action {#_rreplace_in_action}
+rreplace in action 
 ==================
 
-run(&str, Hashmap&lt;&str,&str&gt;) → String
+***run(&str, Hashmap&lt;&str,&str&gt;) → String***
 
-:   `run` takes a string argument to search and a Hashmap of
-    replacements. The Key of the hashmap is the sequence to match, the
-    Value is the sequence to replace.
+`run` takes a string argument to search and a Hashmap of
+replacements. The Key of the hashmap is the sequence to match, the
+Value is the sequence to replace.
 
 ``` {.rust}
 // Create HashMap to define replacements
@@ -26,13 +27,13 @@ rreplace::run("This string is foo", r);
 // Returns:   "xxxx string is foobar"
 ```
 
-Complex examples {#_complex_examples}
+Complex examples 
 ================
 
 The priority with which rreplace updates strings is shown in several
 examples below.
 
-Replace First {#_replace_first}
+Replace First 
 -------------
 
 ``` {.rust}
@@ -46,7 +47,7 @@ rreplace::run("This string is foo", r);
 `"This string"` begins matching before `"string"` and therefore takes
 replacement priority.
 
-Replace Longest {#_replace_longest}
+Replace Longest 
 ---------------
 
 ``` {.rust}
@@ -60,12 +61,8 @@ rreplace::run("This string is foo", replace);
 Both seqences begin matching on the same index, therefore the longer
 replacement takes priority.
 
-More Replacemets and Failing {#_more_replacemets_and_failing}
-----------------------------
-
-### Eclipsing {#_eclipsing}
-
-``` {.rust}
+More Replacemets and Failing 
+---------------------------- ### Eclipsing ``` {.rust}
 replace.insert("string is foo", "yyy");
 replace.insert("i", "I");
 
@@ -77,7 +74,7 @@ rreplace::run("This string is foo", replace);
 `"string is foo"` begins matching earlier than the individual `"i"`
 within.
 
-### Failing {#_failing}
+### Failing 
 
 ``` {.rust}
 replace.insert("string is X", "yyy");
